@@ -3,59 +3,71 @@ const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 const User = require("../models/User");
 
-exports.register = (req, res) => {
+exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
-  User.findOne({ email }).then((user) => {
+  try {
+    // Check if user already exists
+    let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ message: "Email already exists" });
     }
 
+    // Create new user instance
     const newUser = new User({
       name,
       email,
-      password,
+      password, // Plain text password
     });
 
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(newUser.password, salt, (err, hash) => {
-        if (err) throw err;
-        newUser.password = hash;
-        newUser
-          .save()
-          .then((user) => res.json(user))
-          .catch((err) => console.log(err));
-      });
-    });
-  });
+    // Generate salt and hash the password
+    const salt = await bcrypt.genSalt(10);
+    newUser.password = await bcrypt.hash(password, salt);
+
+    // Save user to database
+    user = await newUser.save();
+
+    res.json(user); // Return saved user details
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 };
 
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email }).then((user) => {
+  try {
+    // Check if user exists
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "Email not found" });
     }
 
-    bcrypt.compare(password, user.password).then((isMatch) => {
-      if (isMatch) {
-        const payload = { id: user.id, name: user.name };
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (isMatch) {
+      // User matched, create JWT payload
+      const payload = { id: user.id, name: user.name };
 
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          { expiresIn: 3600 },
-          (err, token) => {
-            res.json({
-              success: true,
-              token: "Bearer " + token,
-            });
-          }
-        );
-      } else {
-        return res.status(400).json({ message: "Password incorrect" });
-      }
-    });
-  });
+      // Sign token
+      jwt.sign(
+        payload,
+        keys.secretOrKey,
+        { expiresIn: 3600 }, // Token expires in 1 hour
+        (err, token) => {
+          if (err) throw err;
+          res.json({
+            success: true,
+            token: "Bearer " + token, // Return token as Bearer token
+          });
+        }
+      );
+    } else {
+      return res.status(400).json({ message: "Password incorrect" });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 };
