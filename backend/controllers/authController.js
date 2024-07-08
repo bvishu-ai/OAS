@@ -1,73 +1,32 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const keys = require("../config/keys");
-const User = require("../models/User");
+const user = require("../models/User");
 
-exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
-
+const createUser = async (req, res) => {
+  console.log(req);
+  const newuser = new user(req.body);
   try {
-    // Check if user already exists
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ message: "Email already exists" });
-    }
-
-    // Create new user instance
-    const newUser = new User({
-      name,
-      email,
-      password, // Plain text password
+    await newuser.save();
+    res.status(200).json({
+      message: "User Created Successfully",
     });
-
-    // Generate salt and hash the password
-    const salt = await bcrypt.genSalt(10);
-    newUser.password = await bcrypt.hash(password, salt);
-
-    // Save user to database
-    user = await newUser.save();
-
-    res.json(user); // Return saved user details
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
-
-exports.login = async (req, res) => {
-  const { email, password } = req.body;
-
+const getUsers = async (req, res) => {
+  const users = await user.find();
   try {
-    // Check if user exists
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "Email not found" });
-    }
-
-    // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (isMatch) {
-      // User matched, create JWT payload
-      const payload = { id: user.id, name: user.name };
-
-      // Sign token
-      jwt.sign(
-        payload,
-        keys.secretOrKey,
-        { expiresIn: 3600 }, // Token expires in 1 hour
-        (err, token) => {
-          if (err) throw err;
-          res.json({
-            success: true,
-            token: "Bearer " + token, // Return token as Bearer token
-          });
-        }
-      );
-    } else {
-      return res.status(400).json({ message: "Password incorrect" });
-    }
+    res.status(200).json(users);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    console.log(err);
   }
 };
+const deleteUser = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const delteduser = await user.findByIdAndDelete(id);
+    res.status(200).json(delteduser);
+  } catch (err) {
+    console.log(err);
+  }
+};
+module.exports = { createUser, getUsers, deleteUser };

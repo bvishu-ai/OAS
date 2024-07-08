@@ -1,78 +1,58 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../../utils/api";
-import { setAuthToken } from "../../utils/api";
-
-const Register = () => {
-  const history = useNavigate();
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  const { username, email, password, confirmPassword } = formData;
-
-  const onChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+import Layout from "../Layout";
+import "../../styles/Register.css";
+import axios from "axios";
+function Register() {
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const handleSubmit = (event) => {
+    let inputObj = { username, email, password };
+    let url = "http://localhost:4000/auth/createuser";
+    axios
+      .post(url, inputObj)
+      .then((res) => {
+        if (res.status === 200) {
+          alert("User Created Successfully");
+        } else {
+          Promise.reject();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    event.preventDefault();
   };
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await api.post("/auth/login", { email, password });
-      if (res && res.data) {
-        localStorage.setItem("jwtToken", res.data.token);
-        setAuthToken(res.data.token);
-        history.push("/items");
-      } else {
-        console.error("Empty or invalid response from server");
-      }
-    } catch (err) {
-      console.error("Error logging in:", err);
-    }
-  };
-
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        type="text"
-        placeholder="Username"
-        name="username"
-        value={username}
-        onChange={onChange}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email Address"
-        name="email"
-        value={email}
-        onChange={onChange}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        name="password"
-        value={password}
-        onChange={onChange}
-        minLength="6"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Confirm Password"
-        name="confirmPassword"
-        value={confirmPassword}
-        onChange={onChange}
-        minLength="6"
-        required
-      />
-      <button type="submit">Register</button>
-    </form>
+    <Layout>
+      <h1>Register page</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Username"
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
+        <input type="submit" value="Sign Up" />
+      </form>
+    </Layout>
   );
-};
-
+}
+//useState() and useEffect() : react hooks
+// react hooks helps us to use class based components into functional components
 export default Register;
