@@ -8,20 +8,22 @@ exports.getAllItems = (req, res) => {
 };
 
 // Create a new item
-exports.createItem = (req, res) => {
+exports.createItem = async (req, res) => {
   const { title, description, startingBid, auctionEndTime } = req.body;
   const newItem = new Item({
     title,
     description,
     startingBid,
     auctionEndTime,
-    seller: req.user.id, // Assuming req.user.id is populated by authMiddleware
+    seller: req.user.id, // Assuming req.user.id is populated by authentication middleware
   });
 
-  newItem
-    .save()
-    .then((item) => res.json(item))
-    .catch((err) => res.status(500).json({ error: err.message }));
+  try {
+    const savedItem = await newItem.save();
+    res.json(savedItem);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 // Get a specific item by ID

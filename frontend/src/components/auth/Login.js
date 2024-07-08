@@ -1,60 +1,55 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api, { setAuthToken } from "../../utils/api";
+import Layout from "../Layout";
+import "../../styles/Register.css";
+import axios from "axios";
 
-const Login = () => {
-  const history = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const { email, password } = formData;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    let inputObj = { email, password };
+    console.log(inputObj);
+    let url = "http://localhost:4000/auth/login";
 
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
     try {
-      const res = await api.post("/auth/login", { email, password });
-      localStorage.setItem("jwtToken", res.data.token);
-      setAuthToken(res.data.token);
-      history("/items"); // Use history function directly for navigation
+      const res = await axios.post(url, inputObj);
+      if (res.status === 200) {
+        alert("Login Successful");
+        localStorage.setItem("isLoggedIn", "true");
+        window.location.href = "/";
+      } else {
+        throw new Error("Login failed");
+      }
     } catch (err) {
-      console.error(err.response.data); // Log the error to console
-      // Example: Set an error state to display an error message to the user
+      console.error(err);
+      alert("Login Failed");
     }
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <label>
-        Email:
+    <Layout>
+      <h1>Login Page</h1>
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
-          name="email"
           value={email}
-          onChange={onChange}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
-      </label>
-      <label>
-        Password:
         <input
           type="password"
           placeholder="Password"
-          name="password"
           value={password}
-          onChange={onChange}
-          minLength="6"
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
-      </label>
-      <button type="submit">Login</button>
-    </form>
+        <input type="submit" value="Login" />
+      </form>
+    </Layout>
   );
-};
+}
 
 export default Login;

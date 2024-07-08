@@ -1,33 +1,52 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import api from "../../utils/api";
+import axios from "axios";
 
-const ItemDetail = () => {
-  const { id } = useParams();
-  const [item, setItem] = useState(null);
+const Catalog = () => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchItem = async () => {
+    const fetchItems = async () => {
       try {
-        const res = await api.get(`/items/${id}`);
-        setItem(res.data);
-      } catch (err) {
-        console.error(err.response.data);
+        setLoading(true);
+        const response = await axios.get(
+          "http://localhost:4000/items/getAllItem"
+        );
+        setItems(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
       }
     };
-    fetchItem();
-  }, [id]);
 
-  if (!item) return <p>Loading...</p>;
+    fetchItems();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
     <div>
-      <h2>{item.itemName}</h2>
-      <p>Description: {item.description}</p>
-      <p>Price: ${item.price}</p>
-      {/* Add more details as needed */}
+      <h1>Catalog</h1>
+      <div className="items-list">
+        {items.map((item) => (
+          <div key={item._id} className="item">
+            <h2>{item.name}</h2>
+            <p>{item.description}</p>
+            <p>Price: ${item.price}</p>
+            {/* Add more item details as needed */}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default ItemDetail;
+export default Catalog;

@@ -12,6 +12,30 @@ const createUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  console.log(req.body);
+  try {
+    // Check if the user exists
+    const user1 = await user.findOne({ email });
+    if (!user1) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the password is correct
+    if (password != user1.password) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Respond with a success message
+    res.status(200).json({ message: "Login Successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 const getUsers = async (req, res) => {
   const users = await user.find();
   try {
@@ -29,4 +53,4 @@ const deleteUser = async (req, res) => {
     console.log(err);
   }
 };
-module.exports = { createUser, getUsers, deleteUser };
+module.exports = { loginUser, createUser, getUsers, deleteUser };

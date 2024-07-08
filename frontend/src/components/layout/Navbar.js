@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { logout, isAuthenticated } from "../../utils/auth";
 
 const Navbar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
+
+  const handleLogout = () => {
+    localStorage.setItem("isLoggedIn", "false");
+    setIsLoggedIn(false);
+    // Perform any additional logout logic here if needed
+  };
+
   return (
     <nav>
       <h1>Auction System</h1>
       <ul>
-        {isAuthenticated() ? (
+        {isLoggedIn ? (
           <>
             <li>
               <Link to="/items">Items</Link>
@@ -16,7 +25,7 @@ const Navbar = () => {
               <Link to="/items/new">Add Item</Link>
             </li>
             <li>
-              <a onClick={logout} href="#!">
+              <a onClick={handleLogout} href="#!">
                 Logout
               </a>
             </li>
