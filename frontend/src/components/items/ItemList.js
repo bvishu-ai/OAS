@@ -12,7 +12,7 @@ function ItemsList() {
       try {
         console.log("Fetching items...");
         const res = await axios.get(
-          "https://oas-backend.onrender.com:4000/items/itemget"
+          "https://oas-backend.onrender.com/items/itemget"
         );
         console.log("Response received:", res);
         if (res.status === 200) {

@@ -11,7 +11,7 @@ const Catalog = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "https://oas-backend.onrender.com:4000/items/getAllItem"
+          "https://oas-backend.onrender.com/items/getAllItem"
         );
         setItems(response.data);
         setLoading(false);
