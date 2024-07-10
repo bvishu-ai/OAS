@@ -11,7 +11,7 @@ function Login() {
     event.preventDefault();
     let inputObj = { email, password };
     console.log(inputObj);
-    let url = "https://oas-backend.onrender.com/auth/login";
+    let url = "http://localhost:4000/auth/login";
 
     try {
       const res = await axios.post(url, inputObj);
