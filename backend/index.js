@@ -18,6 +18,14 @@ const dbConnect = async () => {
 
   // create account on mongodb atlas
 };
+app.get("/ip", async (req, res) => {
+  try {
+    const response = await axios.get("https://ifconfig.me");
+    res.send(`IP address: ${response.data}`);
+  } catch (error) {
+    res.status(500).send("Error fetching IP address");
+  }
+});
 app.use(express.json()); //helps me to convert the request into json format
 app.use(cors());
 app.get("/", (req, res) => {
