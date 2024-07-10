@@ -4,6 +4,9 @@ const cors = require("cors");
 const app = express();
 const auth = require("./routes/auth");
 const items = require("./routes/items");
+
+const PORT = process.env.PORT || 4000;
+
 const dbConnect = async () => {
   try {
     await mongoose.connect(
@@ -24,7 +27,7 @@ app.get("/", (req, res) => {
 });
 app.use("/auth", auth);
 app.use("/items", items);
-app.listen(4000, () => {
+app.listen(PORT, () => {
   dbConnect();
   console.log("server started on port 4000");
 });
