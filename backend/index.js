@@ -29,5 +29,5 @@ app.use("/auth", auth);
 app.use("/items", items);
 app.listen(PORT, () => {
   dbConnect();
-  console.log("server started on port 4000");
+  console.log(`Server started on port ${PORT}`);
 });
