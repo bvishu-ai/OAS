@@ -8,7 +8,7 @@ function Register() {
   const [password, setPassword] = useState();
   const handleSubmit = (event) => {
     let inputObj = { username, email, password };
-    let url = "http://localhost:4000/auth/createuser";
+    let url = "https://oas-backend.onrender.com:4000/auth/createuser";
     axios
       .post(url, inputObj)
       .then((res) => {

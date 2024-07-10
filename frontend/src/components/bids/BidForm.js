@@ -15,7 +15,9 @@ function BiddingPage() {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await axios.get(`http://localhost:4000/items/${itemId}`);
+        const res = await axios.get(
+          `https://oas-backend.onrender.com:4000/items/${itemId}`
+        );
         if (res.status === 200) {
           setItem(res.data);
           setCurrentBidder(res.data.currentBidder || "");
@@ -42,10 +44,13 @@ function BiddingPage() {
     }
 
     try {
-      const res = await axios.put(`http://localhost:4000/items/${itemId}/bid`, {
-        bidder: currentBidder,
-        amount: bidAmount,
-      });
+      const res = await axios.put(
+        `https://oas-backend.onrender.com:4000/items/${itemId}/bid`,
+        {
+          bidder: currentBidder,
+          amount: bidAmount,
+        }
+      );
       if (res.status === 200) {
         alert(`Bid of $${bidAmount} placed successfully!`);
         navigate("/items");
