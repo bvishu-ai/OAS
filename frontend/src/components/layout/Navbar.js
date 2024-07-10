@@ -15,9 +15,9 @@ const Navbar = () => {
   };
 
   return (
-    <nav>
+    <nav className="navbar">
       <h1>
-        <a href="/">Auction System</a>
+        <Link to="/">Auction System</Link>
       </h1>
       <ul>
         {isLoggedIn ? (
@@ -32,7 +32,9 @@ const Navbar = () => {
               <Link to="/items/delete">Delete Item</Link>
             </li>
             <li>
-              <button onClick={handleLogout}>Logout</button>
+              <button onClick={handleLogout} className="logout-button">
+                Logout
+              </button>
             </li>
           </>
         ) : (

@@ -1,4 +1,4 @@
-.register-container {
+.login-container {
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
@@ -6,35 +6,39 @@
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
+  text-align: center;
 }
 
-.register-container h1 {
-  text-align: center;
+.login-container h1 {
   margin-bottom: 20px;
-  font-size: 24px;
+  font-size: 1.8em;
   color: #333;
 }
 
-.register-container form {
+.login-form {
   display: flex;
   flex-direction: column;
 }
 
-.register-container input {
-  padding: 10px;
+.login-input {
   margin-bottom: 15px;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 5px;
+  font-size: 1em;
 }
 
-.register-container input[type="submit"] {
+.login-button {
+  padding: 10px;
   background-color: #007bff;
   color: white;
   border: none;
+  border-radius: 5px;
+  font-size: 1em;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.register-container input[type="submit"]:hover {
+.login-button:hover {
   background-color: #0056b3;
 }

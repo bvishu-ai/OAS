@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../styles/Register.css";
+import "../../styles/Login.css";
 import axios from "axios";
 
 function Login() {
@@ -28,15 +28,16 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h1>Login Page</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-form">
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="login-input"
         />
         <input
           type="password"
@@ -44,8 +45,9 @@ function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="login-input"
         />
-        <input type="submit" value="Login" />
+        <input type="submit" value="Login" className="login-button" />
       </form>
     </div>
   );

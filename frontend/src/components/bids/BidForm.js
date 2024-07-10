@@ -70,7 +70,7 @@ function BiddingPage() {
       <div className="bidding-page">
         <div className="item-details">
           <h1>{item.title}</h1>
-          <img src={item.image} alt={item.title} className="item-image" />
+          <img src={item.image} alt={item.title} className="item-image2" />
           <p>{item.description}</p>
           <p>Base Bid: ${item.startingBid}</p>
           <p>Current Bid: ${item.currentBid}</p>

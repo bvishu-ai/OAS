@@ -1,51 +1,61 @@
 import React, { useState } from "react";
 import "../../styles/Register.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 function Register() {
-  const [username, setUsername] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const handleSubmit = (event) => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState({ message: "", type: "" });
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     let inputObj = { username, email, password };
     let url = "http://localhost:4000/auth/createuser";
-    axios
-      .post(url, inputObj)
-      .then((res) => {
-        if (res.status === 200) {
-          alert("User Created Successfully");
-        } else {
-          Promise.reject();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    event.preventDefault();
+
+    try {
+      const res = await axios.post(url, inputObj);
+      if (res.status === 200) {
+        setAlert({ message: "User Created Successfully" });
+        navigate("/login");
+      } else {
+        setAlert({ message: "Failed to create user" });
+      }
+    } catch (err) {
+      console.log(err);
+      setAlert({ message: "An error occurred" });
+    }
   };
+
   return (
-    <div>
-      <h1>Register page</h1>
+    <div className="register-container">
+      <h1>Register Page</h1>
+      {alert.message && (
+        <div className={`alert alert-${alert.type}`}>{alert.message}</div>
+      )}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Username"
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
         />
         <input
           type="email"
           placeholder="Email"
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <input
           type="password"
           placeholder="Password"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <input type="submit" value="Sign Up" />
       </form>

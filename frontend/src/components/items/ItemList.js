@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/ItemList.css";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link } from "react-router-dom";
 
 function ItemsList() {
   const [items, setItems] = useState([]);
@@ -30,18 +30,23 @@ function ItemsList() {
     <div>
       <h1>Item List</h1>
       <div className="items-list">
-        {items.map((item) => (
-          <div key={item._id} className="item">
-            <img src={item.image} alt={item.title} className="item-image" />
-            <h2>{item.title}</h2>
-            <p>{item.description}</p>
-            <p>Base Bid: ${item.startingBid}</p>
-            <p>Current Bid: ${item.currentBid}</p>
-            <Link to={`/bidding/${item._id}`} className="place-bid-button">
-              Place Bid
-            </Link>
-          </div>
-        ))}
+        {items.map((item) => {
+          const isAuctionEnded = new Date(item.auctionEndTime) < new Date();
+          return (
+            <div key={item._id} className="item">
+              <img src={item.image} alt={item.title} className="item-image" />
+              <h2>{item.title}</h2>
+              <p>{item.description}</p>
+              <p>Base Bid: ${item.startingBid}</p>
+              <p>Current Bid: ${item.currentBid}</p>
+              {!isAuctionEnded && (
+                <Link to={`/bidding/${item._id}`} className="place-bid-button">
+                  Place Bid
+                </Link>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

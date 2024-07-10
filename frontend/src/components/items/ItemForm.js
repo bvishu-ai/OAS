@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../../styles/ItemForm.css";
 
 const ItemForm = () => {
   const [title, setTitle] = useState("");
@@ -33,7 +34,7 @@ const ItemForm = () => {
   };
 
   return (
-    <div>
+    <div className="item-form-container">
       <h2>Create New Item</h2>
       <form onSubmit={handleSubmit}>
         <label>Title:</label>
