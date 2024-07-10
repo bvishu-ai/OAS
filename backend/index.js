@@ -5,8 +5,6 @@ const app = express();
 const auth = require("./routes/auth");
 const items = require("./routes/items");
 
-const PORT = process.env.PORT || 4000;
-
 const dbConnect = async () => {
   try {
     await mongoose.connect(
@@ -27,7 +25,7 @@ app.get("/", (req, res) => {
 });
 app.use("/auth", auth);
 app.use("/items", items);
-app.listen(PORT, () => {
+app.listen(4000, () => {
   dbConnect();
-  console.log(`Server started on port ${PORT}`);
+  console.log(`Server started on port 4000`);
 });
