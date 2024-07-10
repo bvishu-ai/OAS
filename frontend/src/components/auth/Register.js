@@ -8,7 +8,7 @@ function Register() {
   const [password, setPassword] = useState();
   const handleSubmit = (event) => {
     let inputObj = { username, email, password };
-    let url = "https://oas-backend.onrender.com/auth/createuser";
+    let url = "https://oas-backend.onrender.com:4000/auth/createuser";
     axios
       .post(url, inputObj)
       .then((res) => {
@@ -53,6 +53,5 @@ function Register() {
     </Layout>
   );
 }
-//useState() and useEffect() : react hooks
-// react hooks helps us to use class based components into functional components
+
 export default Register;

@@ -16,7 +16,7 @@ function BiddingPage() {
     const fetchItem = async () => {
       try {
         const res = await axios.get(
-          `https://oas-backend.onrender.com/items/${itemId}`
+          `https://oas-backend.onrender.com:4000/items/${itemId}`
         );
         if (res.status === 200) {
           setItem(res.data);
@@ -45,7 +45,7 @@ function BiddingPage() {
 
     try {
       const res = await axios.put(
-        `https://oas-backend.onrender.com/items/${itemId}/bid`,
+        `https://oas-backend.onrender.com:4000/items/${itemId}/bid`,
         {
           bidder: currentBidder,
           amount: bidAmount,
