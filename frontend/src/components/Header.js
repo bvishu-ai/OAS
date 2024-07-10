@@ -3,7 +3,7 @@ import "../styles/Header.css";
 import { Link } from "react-router-dom";
 function Header() {
   return (
-    <div className="navbar">
+    <div>
       <Link className="brand-name" to="/">
         MyCrudApp
       </Link>

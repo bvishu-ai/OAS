@@ -6,7 +6,7 @@ function Layout(props) {
   return (
     <div>
       <Header></Header>
-      <main style={{ height: "80vh" }}>{props.children}</main>
+      <main style={{ height: "100%" }}>{props.children}</main>
       <Footer></Footer>
     </div>
   );

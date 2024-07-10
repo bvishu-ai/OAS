@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from "react";
-import api from "../../utils/api";
+import Layout from "../Layout";
+import "../../styles/ItemList.css";
+import axios from "axios";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
-const ItemList = () => {
+function ItemsList() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const res = await api.get("/items");
-        setItems(res.data);
+        console.log("Fetching items...");
+        const res = await axios.get(
+          "https://oas-backend.onrender.com/items/itemget"
+        );
+        console.log("Response received:", res);
+        if (res.status === 200) {
+          setItems(res.data);
+        } else {
+          throw new Error("Failed to fetch items");
+        }
       } catch (err) {
         console.error(err);
+        alert("Failed to fetch items");
       }
     };
 
@@ -18,19 +30,24 @@ const ItemList = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Item List</h2>
-      <ul>
+    <Layout>
+      <h1>Item List</h1>
+      <div className="items-list">
         {items.map((item) => (
-          <li key={item._id}>
-            <h3>{item.title}</h3>
+          <div key={item._id} className="item">
+            <img src={item.image} alt={item.title} className="item-image" />
+            <h2>{item.title}</h2>
             <p>{item.description}</p>
+            <p>Base Bid: ${item.startingBid}</p>
             <p>Current Bid: ${item.currentBid}</p>
-          </li>
+            <Link to={`/bidding/${item._id}`} className="place-bid-button">
+              Place Bid
+            </Link>
+          </div>
         ))}
-      </ul>
-    </div>
+      </div>
+    </Layout>
   );
-};
+}
 
-export default ItemList;
+export default ItemsList;

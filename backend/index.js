@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 const auth = require("./routes/auth");
+const items = require("./routes/items");
 const dbConnect = async () => {
   try {
     await mongoose.connect(
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 app.use("/auth", auth);
+app.use("/items", items);
 app.listen(4000, () => {
   dbConnect();
   console.log("server started on port 4000");

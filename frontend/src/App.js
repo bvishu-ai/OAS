@@ -6,6 +6,7 @@ import ItemList from "./components/items/ItemList";
 import ItemDetail from "./components/items/ItemDetail";
 import ItemForm from "./components/items/ItemForm";
 import Navbar from "./components/layout/Navbar";
+import BiddingPage from "./components/bids/BidForm";
 import "./App.css";
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
             <Route path="/items" element={<ItemList />} />
             <Route path="/items/new" element={<ItemForm />} />
             <Route path="/items/:id" element={<ItemDetail />} />
+            <Route path="/bidding/:itemId" element={<BiddingPage />} />
           </Routes>
         </div>
       </div>

@@ -1,24 +1,24 @@
 const mongoose = require("mongoose");
 
-const ItemSchema = new mongoose.Schema({
+const ItemSchema = mongoose.Schema({
   title: {
-    type: String,
+    type: mongoose.Schema.Types.String,
     required: true,
   },
   description: {
-    type: String,
+    type: mongoose.Schema.Types.String,
     required: true,
   },
   startingBid: {
-    type: Number,
+    type: mongoose.Schema.Types.Number,
     required: true,
   },
   currentBid: {
-    type: Number,
+    type: mongoose.Schema.Types.Number,
     default: 0,
   },
   auctionEndTime: {
-    type: Date,
+    type: mongoose.Schema.Types.Date,
     required: true,
   },
   seller: {
