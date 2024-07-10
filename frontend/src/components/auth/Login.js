@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Layout from "../Layout";
 import "../../styles/Register.css";
 import axios from "axios";
 
@@ -29,7 +28,7 @@ function Login() {
   };
 
   return (
-    <Layout>
+    <div>
       <h1>Login Page</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -48,7 +47,7 @@ function Login() {
         />
         <input type="submit" value="Login" />
       </form>
-    </Layout>
+    </div>
   );
 }
 

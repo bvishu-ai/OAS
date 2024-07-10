@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import ItemList from "./components/items/ItemList";
-import ItemDetail from "./components/items/ItemDetail";
 import ItemForm from "./components/items/ItemForm";
 import Navbar from "./components/layout/Navbar";
 import BiddingPage from "./components/bids/BidForm";
@@ -19,8 +18,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/items" element={<ItemList />} />
-            <Route path="/items/new" element={<ItemForm />} />
-            <Route path="/items/:id" element={<ItemDetail />} />
+            <Route path="/items/create" element={<ItemForm />} />
             <Route path="/bidding/:itemId" element={<BiddingPage />} />
           </Routes>
         </div>

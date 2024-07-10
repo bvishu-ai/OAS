@@ -16,19 +16,21 @@ exports.getAllItems = (req, res) => {
 // Create a new item
 exports.createItem = async (req, res) => {
   const { title, description, startingBid, auctionEndTime } = req.body;
-  const newItem = new Item({
-    title,
-    description,
-    startingBid,
-    auctionEndTime,
-    seller: req.user.id, // Assuming req.user.id is populated by authentication middleware
-  });
 
   try {
-    const savedItem = await newItem.save();
-    res.json(savedItem);
+    const newItem = new Item({
+      title,
+      description,
+      startingBid,
+      currentBid: startingBid,
+      auctionEndTime,
+    });
+
+    await newItem.save();
+    res.status(201).json(newItem); // Respond with the newly created item
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error creating item:", err);
+    res.status(500).json({ error: "Server error, failed to create item." });
   }
 };
 

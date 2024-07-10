@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Layout from "../Layout";
 import "../../styles/Register.css";
 import axios from "axios";
 function Register() {
@@ -24,7 +23,7 @@ function Register() {
     event.preventDefault();
   };
   return (
-    <Layout>
+    <div>
       <h1>Register page</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -50,7 +49,7 @@ function Register() {
         />
         <input type="submit" value="Sign Up" />
       </form>
-    </Layout>
+    </div>
   );
 }
 

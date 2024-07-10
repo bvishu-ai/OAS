@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../Layout";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../styles/BiddingPage.css";
@@ -67,7 +66,7 @@ function BiddingPage() {
   }
 
   return (
-    <Layout>
+    <div>
       <div className="bidding-page">
         <div className="item-details">
           <h1>{item.title}</h1>
@@ -96,7 +95,7 @@ function BiddingPage() {
           <button type="submit">Place Bid</button>
         </form>
       </div>
-    </Layout>
+    </div>
   );
 }
 

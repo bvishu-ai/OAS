@@ -1,58 +1,75 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import api from "../../utils/api";
 
 const ItemForm = () => {
-  const history = useNavigate();
-  const [formData, setFormData] = useState({
-    itemName: "",
-    description: "",
-    price: "",
-  });
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [startingBid, setStartingBid] = useState(0);
+  const [auctionEndTime, setAuctionEndTime] = useState("");
+  const navigate = useNavigate();
 
-  const { itemName, description, price } = formData;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const onChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    const newItem = {
+      title,
+      description,
+      startingBid,
+      auctionEndTime,
+    };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
     try {
-      await api.post("/items", { itemName, description, price });
-      history.push("/items");
+      const res = await axios.post(
+        "http://localhost:4000/items/createItem",
+        newItem
+      );
+      console.log("Item created successfully:", res.data);
+      navigate("/items");
     } catch (err) {
-      console.error(err.response.data);
+      console.error("Error creating item:", err);
+      alert(err);
     }
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        type="text"
-        placeholder="Item Name"
-        name="itemName"
-        value={itemName}
-        onChange={onChange}
-        required
-      />
-      <textarea
-        placeholder="Description"
-        name="description"
-        value={description}
-        onChange={onChange}
-        required
-      />
-      <input
-        type="number"
-        placeholder="Price"
-        name="price"
-        value={price}
-        onChange={onChange}
-        required
-      />
-      <button type="submit">Add Item</button>
-    </form>
+    <div>
+      <h2>Create New Item</h2>
+      <form onSubmit={handleSubmit}>
+        <label>Title:</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+
+        <label>Description:</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+
+        <label>Starting Bid:</label>
+        <input
+          type="number"
+          value={startingBid}
+          onChange={(e) => setStartingBid(e.target.value)}
+          required
+        />
+
+        <label>Auction End Time:</label>
+        <input
+          type="datetime-local"
+          value={auctionEndTime}
+          onChange={(e) => setAuctionEndTime(e.target.value)}
+          required
+        />
+
+        <button type="submit">Create Item</button>
+      </form>
+    </div>
   );
 };
 

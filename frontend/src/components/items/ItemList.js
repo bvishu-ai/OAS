@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../Layout";
 import "../../styles/ItemList.css";
 import axios from "axios";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
@@ -28,7 +27,7 @@ function ItemsList() {
   }, []);
 
   return (
-    <Layout>
+    <div>
       <h1>Item List</h1>
       <div className="items-list">
         {items.map((item) => (
@@ -44,7 +43,7 @@ function ItemsList() {
           </div>
         ))}
       </div>
-    </Layout>
+    </div>
   );
 }
 

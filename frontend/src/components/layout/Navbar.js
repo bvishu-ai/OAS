@@ -1,20 +1,24 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "../../styles/Navbar.css";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
   );
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.setItem("isLoggedIn", "false");
     setIsLoggedIn(false);
-    // Perform any additional logout logic here if needed
+    navigate("/");
   };
 
   return (
     <nav>
-      <h1>Auction System</h1>
+      <h1>
+        <a href="/">Auction System</a>
+      </h1>
       <ul>
         {isLoggedIn ? (
           <>
@@ -22,12 +26,13 @@ const Navbar = () => {
               <Link to="/items">Items</Link>
             </li>
             <li>
-              <Link to="/items/new">Add Item</Link>
+              <Link to="/items/create">Add Item</Link>
             </li>
             <li>
-              <a onClick={handleLogout} href="#!">
-                Logout
-              </a>
+              <Link to="/items/delete">Delete Item</Link>
+            </li>
+            <li>
+              <button onClick={handleLogout}>Logout</button>
             </li>
           </>
         ) : (
