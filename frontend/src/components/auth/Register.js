@@ -31,7 +31,7 @@ function Register() {
 
   return (
     <div className="register-container">
-      <h1>Register Page</h1>
+      <h1>Sign Up</h1>
       {alert.message && (
         <div className={`alert alert-${alert.type}`}>{alert.message}</div>
       )}

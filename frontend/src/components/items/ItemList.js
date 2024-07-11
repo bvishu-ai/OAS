@@ -6,6 +6,17 @@ import { Link } from "react-router-dom";
 function ItemsList() {
   const [items, setItems] = useState([]);
 
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -40,9 +51,24 @@ function ItemsList() {
               <p>Base Bid: ${item.startingBid}</p>
               <p>Current Bid: ${item.currentBid}</p>
               {!isAuctionEnded && (
-                <Link to={`/bidding/${item._id}`} className="place-bid-button">
-                  Place Bid
-                </Link>
+                <div>
+                  <p>
+                    <p>Bidding ends at: {formatDate(item.auctionEndTime)}</p>
+                  </p>
+                  <Link
+                    to={`/bidding/${item._id}`}
+                    className="place-bid-button"
+                  >
+                    Place Bid
+                  </Link>
+                </div>
+              )}
+              {isAuctionEnded && (
+                <div>
+                  {" "}
+                  <p>Bidding ended at: {formatDate(item.auctionEndTime)}</p>
+                  <p className="sold-out">Sold Out</p>
+                </div>
               )}
             </div>
           );
